@@ -2,18 +2,16 @@
   (:require [clojure.test :refer :all]
             [lisrp.environments :refer :all]
             [lisrp.types :refer :all]
-            [lisrp.evaluation :refer :all]
+            [lisrp.expressions :refer [evaluate]]
             [lisrp.translation :refer [clj->lisrp]]
             [lisrp.builtins :refer :all]))
 
 (deftest test-things
   (testing "integers evaluate to themselves"
-    (= (->LInteger 1)
-       (evaluate (make-environment {})
-                 (->LInteger 1))))
+    (= (clj->lisrp 1)
+       (evaluate (clj->lisrp 1) (make-environment {}))))
   (testing "integers evaluate to themselves"
-    (= (->LInteger 1)
-      (evaluate (make-environment {:bindings {(->LSymbol 'a) (->LInteger 1)}})
-                (->LSymbol 'a))))
+    (= (clj->lisrp 1)
+      (evaluate (clj->lisrp 'a) (make-environment {:bindings {(clj->lisrp 'a) (clj->lisrp 1)}}))))
   (testing "builtin functions work"
-    (= (->LInteger 2) (evaluate default-env (clj->lisrp '(+ 1 1))))))
+    (= (clj->lisrp 2) (evaluate (clj->lisrp '(+ 1 1)) default-env))))

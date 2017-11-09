@@ -1,16 +1,17 @@
 (ns lisrp.translation
-  (:require [lisrp.types :refer :all]))
+  (:require [lisrp.syntax
+    [symbol :refer [->LSymbol]]
+    [integer :refer [->LInteger]]
+    [list :refer [->LList]]]))
 
 (defn clj->lisrp [x]
   (cond
     (symbol? x) (->LSymbol x)
     (integer? x) (->LInteger x)
-    (or (true? x) (false? x)) (->LBoolean x)
     (list? x) (->LList (map clj->lisrp x))))
 
 (defn lisrp->clj [x]
   (cond
-    (instance? lisrp.types.LInteger x) (:val x)
-    (instance? lisrp.types.LBoolean x) (:val x)
-    (instance? lisrp.types.LSymbol x) (:val x)
-    (instance? lisrp.types.LList x) (:vals x)))
+    (instance? lisrp.syntax.integer.LInteger x) (:val x)
+    (instance? lisrp.syntax.symbol.LSymbol x) (:val x)
+    (instance? lisrp.syntax.list.LList x) (:vals x)))

@@ -1,6 +1,6 @@
 (ns lisrp.builtins
   (:require [lisrp.environments :refer [make-environment]])
-  (:require [lisrp.types :refer [->LSymbol]])
+  (:require [lisrp.syntax.symbol :refer [->LSymbol]])
   (:require lisrp.special)
   (:require [lisrp.functions :refer [->BuiltinLFunction]]))
 
