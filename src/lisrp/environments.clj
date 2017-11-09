@@ -1,9 +1,17 @@
 (ns lisrp.environments)
 
-(defrecord Environment [parent bindings])
+(defrecord Environment [parent special-forms macros bindings])
 
-(defn scoped-get [env key]
+(defn make-environment [m]
+  (map->Environment (into
+    {:parent nil
+     :special-forms {}
+     :macros (transient {})
+     :bindings (transient {})}
+    m)))
+
+(defn scoped-get [field env key]
   (cond
-    (contains? (:bindings env) key) ((:bindings env) key)
-    (not (nil? (:parent env))) (recur (:parent env) key)
+    (not (nil? ((field env) key))) ((field env) key)
+    (not (nil? (:parent env))) (recur field (:parent env) key)
     :else nil))

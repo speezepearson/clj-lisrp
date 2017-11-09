@@ -8,8 +8,12 @@
 
 (deftest test-things
   (testing "integers evaluate to themselves"
-    (= (->LInteger 1) (evaluate (->Environment nil {}) (->LInteger 1))))
+    (= (->LInteger 1)
+       (evaluate (make-environment {})
+                 (->LInteger 1))))
   (testing "integers evaluate to themselves"
-    (= (->LInteger 1) (evaluate (->Environment nil {(->LSymbol 'a) (->LInteger 1)}) (->LSymbol 'a))))
+    (= (->LInteger 1)
+      (evaluate (make-environment {:bindings {(->LSymbol 'a) (->LInteger 1)}})
+                (->LSymbol 'a))))
   (testing "builtin functions work"
     (= (->LInteger 2) (evaluate default-env (clj->lisrp '(+ 1 1))))))

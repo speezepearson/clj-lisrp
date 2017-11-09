@@ -1,5 +1,4 @@
-(ns lisrp.functions
-  (:require [lisrp.environments :refer [->Environment]]))
+(ns lisrp.functions)
 
 (defprotocol LFunction
   (call [f args] "call the function with the given arguments"))

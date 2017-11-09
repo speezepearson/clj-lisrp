@@ -1,11 +1,14 @@
 (ns lisrp.builtins
-  (:require [lisrp.environments :refer [->Environment]])
+  (:require [lisrp.environments :refer [make-environment]])
   (:require [lisrp.types :refer [->LSymbol]])
+  (:require lisrp.special)
   (:require [lisrp.functions :refer [->BuiltinLFunction]]))
 
-(def default-env
-  (->Environment nil
-    (into {}
-      (map
-        (fn [op] [op (->BuiltinLFunction op (fn [& args] (apply + (map :val args))))])
-        (map ->LSymbol '(+ - * /))))))
+(def default-env (make-environment {
+    :special-forms lisrp.special/special-forms
+    :bindings {
+      (->LSymbol '+) (->BuiltinLFunction (->LSymbol '+) (fn [& args] (apply + (map :val args))))
+      (->LSymbol '-) (->BuiltinLFunction (->LSymbol '-) (fn [& args] (apply + (map :val args))))
+      (->LSymbol '*) (->BuiltinLFunction (->LSymbol '*) (fn [& args] (apply + (map :val args))))
+      (->LSymbol '/) (->BuiltinLFunction (->LSymbol '/) (fn [& args] (apply + (map :val args))))
+      }}))
