@@ -10,8 +10,10 @@
   (testing "integers evaluate to themselves"
     (is (= (clj->lisrp 1)
            (evaluate (clj->lisrp 1) (make-environment {})))))
-  (testing "integers evaluate to themselves"
+  (testing "symbols evaluate to themselves"
     (is (= (clj->lisrp 1)
            (evaluate (clj->lisrp 'a) (make-environment {:bindings {(clj->lisrp 'a) (clj->lisrp 1)}})))))
   (testing "builtin functions work"
-    (is (= (clj->lisrp 2) (evaluate (clj->lisrp '(+ 1 1)) default-env)))))
+    (is (= (clj->lisrp 2) (evaluate (clj->lisrp '(+ 1 1)) default-env))))
+  (testing "defined functions work"
+    (is (= (clj->lisrp 2) (evaluate (clj->lisrp '((make-fn f (x y) (+ x y)) 1 1)) default-env)))))
